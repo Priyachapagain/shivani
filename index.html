@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💕 Will You Be My Valentine? 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Quicksand:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #e84393;
+    --deep-rose: #c0392b;
+    --blush: #fd79a8;
+    --wine: #6c1438;
+    --warm: #fdf2f0;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    font-family:'Quicksand',sans-serif; overflow:hidden;
+    background: radial-gradient(ellipse at 20% 50%, #ffeef5, #fdd 30%, #fbc2d4 70%, #e84393 100%);
+  }
+
+  /* ═══════════ PAGE 1 — PROPOSAL ═══════════ */
+  .bg-hearts {
+    position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;
+  }
+  .bg-heart {
+    position:absolute; font-size:20px; opacity:.12;
+    animation:floatUp linear infinite; color:var(--rose);
+  }
+  @keyframes floatUp {
+    0%{transform:translateY(110vh) rotate(0);opacity:0}
+    10%{opacity:.12} 90%{opacity:.12}
+    100%{transform:translateY(-10vh) rotate(360deg);opacity:0}
+  }
+
+  .card {
+    position:relative; z-index:10;
+    background:rgba(255,255,255,.85); backdrop-filter:blur(20px);
+    border-radius:32px; padding:50px 40px;
+    max-width:520px; width:90%; text-align:center;
+    box-shadow:0 25px 80px rgba(232,67,147,.25),0 0 0 1px rgba(255,255,255,.6),inset 0 1px 0 rgba(255,255,255,.8);
+    animation:cardEntry 1s cubic-bezier(.34,1.56,.64,1) forwards;
+    opacity:0; transform:scale(.8) translateY(40px);
+    transition: opacity .5s, transform .5s;
+  }
+  .card.hide { opacity:0!important; transform:scale(.92) translateY(-20px)!important; pointer-events:none; }
+  @keyframes cardEntry { to{opacity:1;transform:scale(1) translateY(0)} }
+
+  .big-heart {
+    font-size:80px; display:inline-block;
+    animation:heartbeat 1.2s ease-in-out infinite;
+    filter:drop-shadow(0 6px 24px rgba(232,67,147,.4)); margin-bottom:8px;
+  }
+  @keyframes heartbeat {
+    0%,100%{transform:scale(1)} 14%{transform:scale(1.15)}
+    28%{transform:scale(1)} 42%{transform:scale(1.1)} 56%{transform:scale(1)}
+  }
+  .title {
+    font-family:'Dancing Script',cursive; font-size:46px; font-weight:700;
+    color:var(--wine); line-height:1.2; margin-bottom:12px;
+    text-shadow:0 2px 10px rgba(232,67,147,.15);
+  }
+  .subtitle { font-size:16px; color:#b5557a; margin-bottom:36px; font-weight:300; letter-spacing:.5px; }
+  .buttons { display:flex; gap:20px; justify-content:center; flex-wrap:wrap; }
+  .btn {
+    padding:16px 48px; border:none; border-radius:60px;
+    font-family:'Quicksand',sans-serif; font-size:18px; font-weight:600;
+    cursor:pointer; letter-spacing:.5px; position:relative; overflow:hidden;
+    transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .btn::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.3),transparent); pointer-events:none; }
+  .btn-yes { background:linear-gradient(135deg,var(--rose),var(--deep-rose)); color:#fff; box-shadow:0 8px 30px rgba(232,67,147,.4); }
+  .btn-yes:hover { transform:scale(1.1) translateY(-3px); box-shadow:0 14px 40px rgba(232,67,147,.5); }
+  .btn-no { background:#fff; color:var(--rose); border:2px solid var(--blush); box-shadow:0 4px 15px rgba(0,0,0,.05); }
+  .btn-no:hover { transform:scale(.95); background:#fff0f3; }
+
+  /* ═══════════ ERROR ═══════════ */
+  .error-overlay {
+    position:fixed; inset:0; background:rgba(0,0,0,.7); backdrop-filter:blur(8px);
+    z-index:100; display:none; align-items:center; justify-content:center;
+  }
+  .error-overlay.show { display:flex; }
+  .error-box {
+    background:#fff; border-radius:24px; padding:44px 40px;
+    max-width:420px; width:90%; text-align:center;
+    animation:errorBounce .5s cubic-bezier(.34,1.56,.64,1);
+    box-shadow:0 30px 80px rgba(0,0,0,.3); position:relative; overflow:hidden;
+  }
+  .error-box::before { content:''; position:absolute; top:0; left:0; right:0; height:5px; background:linear-gradient(90deg,#e74c3c,#e84393,#e74c3c); }
+  @keyframes errorBounce { 0%{transform:scale(.5) translateY(50px);opacity:0} 100%{transform:scale(1) translateY(0);opacity:1} }
+  .error-icon { font-size:64px; margin-bottom:12px; display:inline-block; animation:errorPulse .6s ease; }
+  @keyframes errorPulse { 0%{transform:scale(0) rotate(-20deg)} 50%{transform:scale(1.3) rotate(10deg)} 100%{transform:scale(1) rotate(0)} }
+  .error-title { font-family:'Dancing Script',cursive; font-size:30px; color:#e74c3c; margin-bottom:10px; }
+  .error-msg { color:#777; font-size:15px; line-height:1.6; margin-bottom:24px; }
+  .error-msg strong { color:var(--rose); }
+  .btn-tryagain {
+    padding:14px 40px; background:linear-gradient(135deg,var(--rose),#e74c3c);
+    color:#fff; border:none; border-radius:50px; font-family:'Quicksand',sans-serif;
+    font-size:16px; font-weight:600; cursor:pointer; transition:all .3s;
+    box-shadow:0 6px 20px rgba(232,67,147,.3);
+  }
+  .btn-tryagain:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(232,67,147,.4); }
+
+  /* ═══════════════════════════════════════════════
+     PAGE 2 — EDITORIAL CINEMATIC REVEAL
+     ═══════════════════════════════════════════════ */
+  .scene {
+    position:fixed; inset:0; z-index:100;
+    display:none; align-items:center; justify-content:center;
+    background: var(--warm);
+    overflow:hidden;
+  }
+  .scene.show { display:flex; }
+
+  /* Warm vignette */
+  .vignette {
+    position:absolute; inset:0; z-index:1; pointer-events:none;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(108,20,56,.06) 100%);
+  }
+
+  /* Giant bg heart — soft breath */
+  .bg-beat {
+    position:absolute; top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    pointer-events:none; z-index:2;
+  }
+  .bg-beat svg {
+    width:100vmin; height:100vmin; opacity:.035;
+    animation:bgBeat 1.6s ease-in-out infinite;
+  }
+  @keyframes bgBeat {
+    0%,100%{transform:scale(1)} 12%{transform:scale(1.05)}
+    24%{transform:scale(1)} 36%{transform:scale(1.03)} 48%{transform:scale(1)}
+  }
+
+  /* Warm light leak */
+  .light-leak {
+    position:absolute; z-index:3; pointer-events:none;
+    width:500px; height:500px; border-radius:50%;
+    top:-10%; right:-8%;
+    background: radial-gradient(circle, rgba(253,180,160,.18) 0%, transparent 70%);
+    animation: leakDrift 8s ease-in-out infinite alternate;
+  }
+  @keyframes leakDrift {
+    0%{transform:translate(0,0) scale(1)} 100%{transform:translate(-40px,30px) scale(1.1)}
+  }
+  .light-leak-2 {
+    position:absolute; z-index:3; pointer-events:none;
+    width:400px; height:400px; border-radius:50%;
+    bottom:-8%; left:-5%;
+    background: radial-gradient(circle, rgba(232,67,147,.08) 0%, transparent 70%);
+    animation: leakDrift2 10s ease-in-out infinite alternate;
+  }
+  @keyframes leakDrift2 {
+    0%{transform:translate(0,0) scale(1)} 100%{transform:translate(30px,-20px) scale(1.15)}
+  }
+
+  /* ── Content layout ── */
+  .scene-content {
+    position:relative; z-index:10;
+    display:flex; flex-direction:column; align-items:center;
+    text-align:center; padding:20px;
+  }
+
+  /* ── THE HEART — BIG ── */
+  .heart-frame {
+    width: min(520px, 88vmin);
+    height: min(520px, 88vmin);
+    position:relative;
+    margin-bottom:32px;
+    filter: drop-shadow(0 20px 60px rgba(232,67,147,.2));
+  }
+
+  /* Outer glow */
+  .heart-glow {
+    position:absolute; inset:-30px; border-radius:50%;
+    background: radial-gradient(circle, rgba(232,67,147,.1) 0%, transparent 65%);
+    opacity:0;
+  }
+  .scene.show .heart-glow {
+    animation: hgIn .8s ease 2.2s forwards, glowBreath 3s ease-in-out 3s infinite;
+  }
+  @keyframes hgIn { to{opacity:1} }
+  @keyframes glowBreath {
+    0%,100%{transform:scale(1);opacity:.6} 50%{transform:scale(1.08);opacity:1}
+  }
+
+  /* SVG stroke draw */
+  .heart-stroke-svg {
+    position:absolute; inset:0; width:100%; height:100%; z-index:2;
+  }
+  .heart-stroke-svg .trace {
+    fill:none; stroke:var(--rose); stroke-width:2; stroke-linecap:round;
+    stroke-dasharray:1800; stroke-dashoffset:1800; opacity:0;
+  }
+  .scene.show .heart-stroke-svg .trace {
+    opacity:1;
+    animation: drawLine 2.2s cubic-bezier(.4,0,.2,1) .2s forwards;
+  }
+  @keyframes drawLine { to{stroke-dashoffset:0} }
+
+  /* Stroke fades after photo appears */
+  .scene.show .heart-stroke-svg {
+    animation: strokeFade .8s ease 3.2s forwards;
+  }
+  @keyframes strokeFade { to{opacity:.25} }
+
+  /* Photo reveal */
+  .heart-photo {
+    position:absolute; inset:2px; z-index:1;
+    clip-path: path('M258 490 C103 376, -21 206, 28 118 C78 31, 144 9, 258 99 C372 9, 438 31, 488 118 C538 206, 413 376, 258 490Z');
+    overflow:hidden;
+    opacity:0; transform:scale(.9);
+  }
+  .scene.show .heart-photo {
+    animation: photoBloom 1s cubic-bezier(.16,1,.3,1) 2s forwards;
+  }
+  @keyframes photoBloom { to{opacity:1;transform:scale(1)} }
+
+  .heart-photo img {
+    width:100%; height:100%; object-fit:cover; display:block;
+    object-position: center 35%;
+    filter: saturate(1.05) contrast(1.02);
+  }
+
+  /* Whole frame breathes after reveal */
+  .heart-frame.alive {
+    animation: frameBeat 1.6s ease-in-out infinite;
+  }
+  @keyframes frameBeat {
+    0%,100%{transform:scale(1)} 12%{transform:scale(1.025)}
+    24%{transform:scale(1)} 36%{transform:scale(1.015)} 48%{transform:scale(1)}
+  }
+
+  /* ── Text ── */
+  .s-line {
+    opacity:0; transform:translateY(20px);
+  }
+  .scene.show .s-line {
+    animation: lineUp .8s cubic-bezier(.16,1,.3,1) forwards;
+  }
+  @keyframes lineUp { to{opacity:1;transform:translateY(0)} }
+
+  .s-main {
+    font-family:'Cormorant Garamond',serif;
+    font-size:42px; font-weight:600; color:var(--wine);
+    letter-spacing:1px;
+    line-height:1.3;
+  }
+  .s-main em {
+    font-style:italic; font-weight:400;
+    color:var(--rose);
+  }
+
+  .s-thin-line {
+    width:60px; height:1px; border:none;
+    background:linear-gradient(90deg,transparent,var(--blush),transparent);
+    margin:16px auto;
+  }
+
+  .s-caption {
+    font-family:'Quicksand',sans-serif;
+    font-size:14px; color:#c9a0ae;
+    font-weight:400; letter-spacing:2px;
+    text-transform:uppercase;
+  }
+
+  /* ═══ Mobile ═══ */
+  @media(max-width:550px){
+    .card{padding:36px 24px}
+    .title{font-size:34px}
+    .big-heart{font-size:60px}
+    .btn{padding:14px 36px;font-size:16px}
+    .heart-frame{width:90vmin;height:90vmin}
+    .heart-photo{
+      inset:2px;
+      clip-path:path('M180 340 C72 260,-16 144,20 80 C56 18,102 4,180 66 C258 4,304 18,340 80 C376 144,288 260,180 340Z');
+    }
+    .s-main{font-size:30px}
+    .s-caption{font-size:12px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ PAGE 1 ═══════════ -->
+<div class="bg-hearts" id="bgHearts"></div>
+
+<div class="card" id="mainCard">
+  <div class="big-heart">💖</div>
+  <h1 class="title">Will You Be<br>My Valentine?</h1>
+  <p class="subtitle">Every love story is beautiful, but ours could be my favorite ✨</p>
+  <div class="buttons">
+    <button class="btn btn-yes" onclick="sayYes()">Yes! 💕</button>
+    <button class="btn btn-no" id="noBtn" onclick="sayNo()">No 😢</button>
+  </div>
+</div>
+
+<!-- ═══════════ ERROR ═══════════ -->
+<div class="error-overlay" id="errorOverlay">
+  <div class="error-box" id="errorBox">
+    <div class="error-icon">💔</div>
+    <h2 class="error-title">Error 404</h2>
+    <p class="error-msg" id="errorMsg"></p>
+    <button class="btn-tryagain" onclick="closeError()">Try Again 💗</button>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE 2 — CINEMATIC ═══════════ -->
+<div class="scene" id="scene">
+
+  <div class="vignette"></div>
+  <div class="bg-beat">
+    <svg viewBox="0 0 512 512"><path fill="#e84393" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>
+  </div>
+  <div class="light-leak"></div>
+  <div class="light-leak-2"></div>
+
+  <div class="scene-content">
+
+    <!-- Big heart photo -->
+    <div class="heart-frame" id="heartFrame">
+      <div class="heart-glow"></div>
+
+      <svg class="heart-stroke-svg" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg">
+        <path class="trace"
+          d="M260 488 C104 374, -21 204, 28 116 C78 28, 144 7, 260 97 C376 7, 442 28, 492 116 C542 204, 416 374, 260 488Z"/>
+      </svg>
+
+      <div class="heart-photo">
+        <img src="images/photo.jpeg" alt="Us">
+      </div>
+    </div>
+
+    <!-- Minimal text -->
+    <p class="s-main s-line" style="animation-delay:2.8s">
+      You are <em>mine</em>
+    </p>
+    <hr class="s-thin-line s-line" style="animation-delay:3.2s">
+    <p class="s-caption s-line" style="animation-delay:3.5s">
+      Happy Valentine's Day Maya 💖
+    </p>
+
+  </div>
+</div>
+
+<script>
+  /* ── BG hearts ── */
+  const bgH=document.getElementById('bgHearts');
+  '♥❤💕♡💗💖'.split('').forEach(()=>{
+    for(let i=0;i<4;i++){
+      const s=document.createElement('span');
+      s.className='bg-heart';
+      s.textContent='♥❤💕♡💗💖'[Math.floor(Math.random()*6)];
+      s.style.left=Math.random()*100+'%';
+      s.style.fontSize=(14+Math.random()*24)+'px';
+      s.style.animationDuration=(9+Math.random()*14)+'s';
+      s.style.animationDelay=(Math.random()*10)+'s';
+      bgH.appendChild(s);
+    }
+  });
+
+  /* ── Error ── */
+  const errMsgs=[
+    `<strong>"No"</strong> is not a valid option!<br>My heart does not accept this answer. 🥺`,
+    `System Error: <strong>Rejection module</strong> not found!<br>Only love.exe is installed here. 💕`,
+    `Warning: Saying <strong>"No"</strong> may cause<br>extreme puppy-dog eyes! 🐶💔`,
+    `Fatal Error: <strong>Heart.exe</strong> has stopped working.<br>Only "Yes" can restart it! 💖`,
+    `Access Denied: The <strong>"No"</strong> button<br>is just for decoration! 😏💗`,
+    `Error: <strong>Cuteness overload!</strong><br>You can't resist forever... 🥰`,
+  ];
+  let ei=0,noCount=0;
+
+  function sayNo(){
+    noCount++;
+    document.getElementById('errorMsg').innerHTML=errMsgs[ei%errMsgs.length]; ei++;
+    const ov=document.getElementById('errorOverlay'),bx=document.getElementById('errorBox');
+    ov.classList.add('show');
+    bx.style.animation='none';bx.offsetHeight;bx.style.animation='';
+    const nb=document.getElementById('noBtn');
+    nb.style.transform=`scale(${Math.max(.4,1-noCount*.12)})`;
+    if(noCount>=3)nb.style.opacity=Math.max(.2,1-noCount*.15);
+  }
+  function closeError(){document.getElementById('errorOverlay').classList.remove('show')}
+
+  /* ── Yes → cinematic transition ── */
+  function sayYes(){
+    const card=document.getElementById('mainCard');
+    card.classList.add('hide');
+    bgH.style.transition='opacity .5s'; bgH.style.opacity='0';
+
+    setTimeout(()=>{
+      card.style.display='none'; bgH.style.display='none';
+      document.getElementById('scene').classList.add('show');
+      // Start breathing after photo reveal
+      setTimeout(()=>{
+        document.getElementById('heartFrame').classList.add('alive');
+      },3000);
+    },500);
+  }
+</script>
+
+</body>
+</html>
